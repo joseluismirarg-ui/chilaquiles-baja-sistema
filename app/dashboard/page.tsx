@@ -102,34 +102,41 @@ export default function DashboardPage() {
         {/* ACCIONES RÁPIDAS */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Acciones rápidas</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <a
               href="/gastos/registrar"
-              className="bg-blue-600 text-white p-4 rounded-lg text-center hover:bg-blue-700 transition"
+              className="bg-red-600 text-white p-4 rounded-lg text-center hover:bg-red-700 transition"
             >
-              <div className="text-2xl mb-2">➕</div>
-              <div className="font-semibold">Registrar gasto</div>
+              <div className="text-2xl mb-2">➖</div>
+              <div className="font-semibold text-sm">Gasto</div>
             </a>
             <a
-              href="/reportes"
+              href="/ganancias/registrar"
               className="bg-green-600 text-white p-4 rounded-lg text-center hover:bg-green-700 transition"
             >
-              <div className="text-2xl mb-2">📊</div>
-              <div className="font-semibold">Reportes</div>
+              <div className="text-2xl mb-2">➕</div>
+              <div className="font-semibold text-sm">Ganancia</div>
             </a>
             <a
-              href="/inventario"
+              href="/inventario/agregar"
               className="bg-purple-600 text-white p-4 rounded-lg text-center hover:bg-purple-700 transition"
             >
               <div className="text-2xl mb-2">📦</div>
-              <div className="font-semibold">Inventario</div>
+              <div className="font-semibold text-sm">Insumo</div>
             </a>
             <a
-              href="/proveedores"
-              className="bg-orange-600 text-white p-4 rounded-lg text-center hover:bg-orange-700 transition"
+              href="/reportes"
+              className="bg-blue-600 text-white p-4 rounded-lg text-center hover:bg-blue-700 transition"
             >
-              <div className="text-2xl mb-2">🏪</div>
-              <div className="font-semibold">Proveedores</div>
+              <div className="text-2xl mb-2">📊</div>
+              <div className="font-semibold text-sm">Reportes</div>
+            </a>
+            <a
+              href="/gastos"
+              className="bg-gray-600 text-white p-4 rounded-lg text-center hover:bg-gray-700 transition"
+            >
+              <div className="text-2xl mb-2">📝</div>
+              <div className="font-semibold text-sm">Historial</div>
             </a>
           </div>
         </div>

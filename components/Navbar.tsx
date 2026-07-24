@@ -28,12 +28,18 @@ export default function Navbar() {
         <Link href="/dashboard" className="text-2xl font-bold">
           🌶️ Chilaquiles Baja
         </Link>
-        <div className="flex gap-6 items-center">
+        <div className="flex gap-6 items-center text-sm">
           <Link href="/dashboard" className="hover:text-blue-200 transition">
             Dashboard
           </Link>
           <Link href="/gastos" className="hover:text-blue-200 transition">
-            Transacciones
+            Gastos
+          </Link>
+          <Link href="/ganancias" className="hover:text-blue-200 transition">
+            Ganancias
+          </Link>
+          <Link href="/inventario" className="hover:text-blue-200 transition">
+            Inventario
           </Link>
           <Link href="/reportes" className="hover:text-blue-200 transition">
             Reportes
