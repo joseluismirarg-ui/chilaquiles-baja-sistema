@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Logo from '@/components/Logo';
 import { supabase } from '@/lib/supabase';
-import { obtenerTotalesGastos } from '@/lib/gastos';
+import { obtenerTotalesGastos, obtenerGastosMes } from '@/lib/gastos';
 
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
+  const [gastos, setGastos] = useState<any[]>([]);
   const [totales, setTotales] = useState({
     fijos: 0,
     variables: 0,
@@ -37,6 +38,9 @@ export default function DashboardPage() {
       const mesActual = new Date().toISOString().split('T')[0].slice(0, 7);
       const datos = await obtenerTotalesGastos(mesActual);
       setTotales(datos);
+
+      const gastosData = await obtenerGastosMes(mesActual);
+      setGastos(gastosData || []);
     } catch (err) {
       console.error('Error cargando datos:', err);
     } finally {
