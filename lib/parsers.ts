@@ -9,7 +9,59 @@ export type ReporteData = {
   comisiones: number;
   promociones: number;
   dineroNeto: number;
+  detalles?: {
+    totalPedidos?: number;
+    comisionPorcentaje?: number;
+  };
 };
+
+// Variantes de nombres de columnas que pueden tener los reportes
+const COLUMNAS_INGRESOS = [
+  'Earnings',
+  'Ingresos',
+  'Total Earnings',
+  'Subtotal',
+  'Monto',
+  'Bruto',
+  'Sales',
+  'Ingresos Totales',
+];
+
+const COLUMNAS_COMISIONES = [
+  'Service Fee',
+  'Comisión',
+  'Commission',
+  'Comisiones',
+  'Service Fees',
+  'Tarifa de Servicio',
+  'Fee',
+  'Comisión Plataforma',
+];
+
+const COLUMNAS_PROMOCIONES = [
+  'Promotions',
+  'Promociones',
+  'Promotion Credits',
+  'Promo',
+  'Descuentos',
+  'Ajustes',
+  'Credits',
+  'Descuento a Clientes',
+];
+
+function obtenerValorFila(
+  fila: Record<string, any>,
+  posiblesColumnas: string[]
+): number {
+  for (const columna of posiblesColumnas) {
+    const valor = fila[columna];
+    if (valor !== undefined && valor !== null && valor !== '') {
+      const numero = parseFloat(valor.toString().replace(/[^0-9.-]/g, ''));
+      if (!isNaN(numero)) return numero;
+    }
+  }
+  return 0;
+}
 
 export async function parsearCSV(
   archivo: File
@@ -22,24 +74,24 @@ export async function parsearCSV(
 
   if (registros.length === 0) return null;
 
-  // Detección automática de plataforma
-  const primeraFila = registros[0];
-  const columnasStr = JSON.stringify(primeraFila).toLowerCase();
-
+  // Detección de plataforma por nombre de archivo
+  const nombreArchivo = archivo.name.toLowerCase();
   let plataforma: 'uber_eats' | 'didi_food' = 'uber_eats';
-  if (columnasStr.includes('didi')) {
+
+  if (nombreArchivo.includes('didi')) {
     plataforma = 'didi_food';
+  } else if (nombreArchivo.includes('uber')) {
+    plataforma = 'uber_eats';
   }
 
-  // Parser general - adaptar según formato real
   let ingresosBrutos = 0;
   let comisiones = 0;
   let promociones = 0;
 
-  registros.forEach(fila => {
-    const ingreso = parseFloat(fila['Earnings'] || fila['Ingresos'] || '0');
-    const comision = parseFloat(fila['Service Fee'] || fila['Comisión'] || '0');
-    const promo = parseFloat(fila['Promotions'] || fila['Promociones'] || '0');
+  registros.forEach((fila) => {
+    const ingreso = obtenerValorFila(fila, COLUMNAS_INGRESOS);
+    const comision = obtenerValorFila(fila, COLUMNAS_COMISIONES);
+    const promo = obtenerValorFila(fila, COLUMNAS_PROMOCIONES);
 
     if (ingreso) ingresosBrutos += ingreso;
     if (comision) comisiones += comision;
@@ -53,7 +105,14 @@ export async function parsearCSV(
     ingresosBrutos,
     comisiones,
     promociones,
-    dineroNeto: ingresosBrutos - comisiones - promociones,
+    dineroNeto: Math.max(0, ingresosBrutos - comisiones - promociones),
+    detalles: {
+      totalPedidos: registros.length,
+      comisionPorcentaje:
+        ingresosBrutos > 0
+          ? Math.round((comisiones / ingresosBrutos) * 100)
+          : 0,
+    },
   };
 }
 
@@ -69,21 +128,23 @@ export async function parsearExcel(
   if (registros.length === 0) return null;
 
   // Detección de plataforma
-  const primeraFila = JSON.stringify(registros[0]).toLowerCase();
+  const nombreArchivo = archivo.name.toLowerCase();
   let plataforma: 'uber_eats' | 'didi_food' = 'uber_eats';
-  if (primeraFila.includes('didi')) {
+
+  if (nombreArchivo.includes('didi')) {
     plataforma = 'didi_food';
+  } else if (nombreArchivo.includes('uber')) {
+    plataforma = 'uber_eats';
   }
 
-  // Sumar totales
   let ingresosBrutos = 0;
   let comisiones = 0;
   let promociones = 0;
 
-  registros.forEach(fila => {
-    const ingreso = parseFloat(fila['Earnings'] || fila['Ingresos'] || '0');
-    const comision = parseFloat(fila['Service Fee'] || fila['Comisión'] || '0');
-    const promo = parseFloat(fila['Promotions'] || fila['Promociones'] || '0');
+  registros.forEach((fila) => {
+    const ingreso = obtenerValorFila(fila, COLUMNAS_INGRESOS);
+    const comision = obtenerValorFila(fila, COLUMNAS_COMISIONES);
+    const promo = obtenerValorFila(fila, COLUMNAS_PROMOCIONES);
 
     if (ingreso) ingresosBrutos += ingreso;
     if (comision) comisiones += comision;
@@ -97,7 +158,14 @@ export async function parsearExcel(
     ingresosBrutos,
     comisiones,
     promociones,
-    dineroNeto: ingresosBrutos - comisiones - promociones,
+    dineroNeto: Math.max(0, ingresosBrutos - comisiones - promociones),
+    detalles: {
+      totalPedidos: registros.length,
+      comisionPorcentaje:
+        ingresosBrutos > 0
+          ? Math.round((comisiones / ingresosBrutos) * 100)
+          : 0,
+    },
   };
 }
 
