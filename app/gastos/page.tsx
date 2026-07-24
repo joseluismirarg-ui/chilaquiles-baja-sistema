@@ -148,34 +148,39 @@ export default function GastosPage() {
             </div>
           ) : (
             <div className="divide-y divide-gray-200">
-              {gastos.map((gasto) => (
-                <div
-                  key={gasto.id}
-                  className="p-6 flex justify-between items-center hover:bg-gray-50 transition"
-                >
-                  <div>
-                    <p className="font-semibold text-gray-900">{gasto.concepto}</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {gasto.tipo.replace(/_/g, ' ')} • {gasto.fecha}
-                    </p>
-                    {gasto.notas && (
-                      <p className="text-xs text-gray-500 mt-1">📝 {gasto.notas}</p>
-                    )}
+              {gastos.map((gasto) => {
+                const nombreSocio = gasto.email_socio
+                  ? gasto.email_socio.split('@')[0]
+                  : 'Desconocido';
+                return (
+                  <div
+                    key={gasto.id}
+                    className="p-6 flex justify-between items-center hover:bg-gray-50 transition"
+                  >
+                    <div>
+                      <p className="font-semibold text-gray-900">{gasto.concepto}</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        👤 {nombreSocio} • {gasto.tipo.replace(/_/g, ' ')} • {gasto.fecha}
+                      </p>
+                      {gasto.notas && (
+                        <p className="text-xs text-gray-500 mt-1">📝 {gasto.notas}</p>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p
+                        className={`text-lg font-bold ${
+                          gasto.tipo.includes('venta')
+                            ? 'text-green-600'
+                            : 'text-red-600'
+                        }`}
+                      >
+                        {gasto.tipo.includes('venta') ? '+' : '-'}$
+                        {gasto.monto.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p
-                      className={`text-lg font-bold ${
-                        gasto.tipo.includes('venta')
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }`}
-                    >
-                      {gasto.tipo.includes('venta') ? '+' : '-'}$
-                      {gasto.monto.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

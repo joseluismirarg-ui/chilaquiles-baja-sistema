@@ -226,21 +226,28 @@ export default function ReportesPage() {
           <h2 className="text-xl font-bold text-gray-900 mb-4">Últimas transacciones</h2>
 
           <div className="space-y-2">
-            {gastos.slice(0, 10).map((gasto) => (
-              <div key={gasto.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <div>
-                  <p className="font-semibold text-gray-900">{gasto.concepto}</p>
-                  <p className="text-sm text-gray-600">{gasto.tipo.replace('_', ' ')}</p>
+            {gastos.slice(0, 10).map((gasto) => {
+              const nombreSocio = gasto.email_socio
+                ? gasto.email_socio.split('@')[0]
+                : 'Desconocido';
+              return (
+                <div key={gasto.id} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition">
+                  <div>
+                    <p className="font-semibold text-gray-900">{gasto.concepto}</p>
+                    <p className="text-sm text-gray-600">
+                      👤 {nombreSocio} • {gasto.tipo.replace('_', ' ')} • {gasto.fecha}
+                    </p>
+                  </div>
+                  <p
+                    className={`font-semibold text-lg ${
+                      gasto.tipo.includes('venta') ? 'text-green-600' : 'text-red-600'
+                    }`}
+                  >
+                    {gasto.tipo.includes('venta') ? '+' : '-'}${gasto.monto.toLocaleString()}
+                  </p>
                 </div>
-                <p
-                  className={`font-semibold text-lg ${
-                    gasto.tipo.includes('venta') ? 'text-green-600' : 'text-red-600'
-                  }`}
-                >
-                  {gasto.tipo.includes('venta') ? '+' : '-'}${gasto.monto.toLocaleString()}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </main>

@@ -7,10 +7,11 @@ export type User = {
 
 export type Gasto = {
   id: string;
-  tipo: 'fijo' | 'variable' | 'venta_fisica' | 'venta_plataforma';
+  tipo: 'fijo' | 'variable' | 'venta_fisica' | 'venta_plataforma' | 'ganancia_manual';
   concepto: string;
   monto: number;
   socio_id: string;
+  email_socio?: string;
   proveedor_id?: string;
   fecha: string;
   notas?: string;

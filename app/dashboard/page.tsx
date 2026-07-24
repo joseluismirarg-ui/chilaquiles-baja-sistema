@@ -145,6 +145,40 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ÚLTIMAS TRANSACCIONES */}
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Últimas transacciones</h2>
+          <div className="space-y-3">
+            {gastos.slice(0, 5).map((gasto: any) => {
+              const nombreSocio = gasto.email_socio
+                ? gasto.email_socio.split('@')[0]
+                : 'Desconocido';
+              return (
+                <div
+                  key={gasto.id}
+                  className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition"
+                >
+                  <div>
+                    <p className="font-semibold text-gray-900">{gasto.concepto}</p>
+                    <p className="text-xs text-gray-600">
+                      👤 {nombreSocio} • {gasto.fecha}
+                    </p>
+                  </div>
+                  <p
+                    className={`font-bold ${
+                      gasto.tipo.includes('venta')
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
+                  >
+                    {gasto.tipo.includes('venta') ? '+' : '-'}${gasto.monto.toLocaleString()}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* DESGLOSE DETALLADO */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Desglose de gastos</h2>

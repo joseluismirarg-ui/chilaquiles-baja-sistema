@@ -2,9 +2,18 @@ import { supabase } from './supabase';
 import { Gasto } from './types';
 
 export async function registrarGasto(gasto: Omit<Gasto, 'id' | 'created_at'>) {
+  // Obtener el email del usuario actual si no está incluido
+  let gastoConEmail = gasto;
+  if (!gasto.email_socio) {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.user?.email) {
+      gastoConEmail = { ...gasto, email_socio: data.session.user.email };
+    }
+  }
+
   const { data, error } = await supabase
     .from('gastos')
-    .insert([gasto])
+    .insert([gastoConEmail])
     .select()
     .single();
 
