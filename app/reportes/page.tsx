@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { supabase } from '@/lib/supabase';
 import { obtenerGastosMes, obtenerTotalesGastos } from '@/lib/gastos';
-import { calcularUtilidades } from '@/lib/utilidades';
+import { calcularUtilidades, CalculoUtilidades } from '@/lib/utilidades';
 import { parsearReporte } from '@/lib/parsers';
 
 export default function ReportesPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [gastos, setGastos] = useState<any[]>([]);
-  const [utilidades, setUtilidades] = useState<any>(null);
+  const [utilidades, setUtilidades] = useState<CalculoUtilidades | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
@@ -143,9 +143,8 @@ export default function ReportesPage() {
               <div className="p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600">Gastos totales</p>
                 <p className="text-2xl font-bold text-red-600 mt-2">
-                  ${Object.values(utilidades.gastosPorSocio)
-                    .reduce((a: number, b: number) => a + b, 0)
-                    .toLocaleString()}
+                  ${(utilidades && Object.values(utilidades.gastosPorSocio)
+                    .reduce((a: number, b: number) => a + b, 0)) || 0}
                 </p>
               </div>
 
