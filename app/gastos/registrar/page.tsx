@@ -34,20 +34,49 @@ export default function RegistrarGastoPage() {
 
     try {
       if (!user) throw new Error('Usuario no autenticado');
+      if (!concepto.trim()) throw new Error('Debes indicar qué es el gasto');
+      if (!monto || parseFloat(monto) <= 0) throw new Error('El monto debe ser mayor a 0');
 
-      await registrarGasto({
+      const gastoData = {
         tipo: tipo as any,
-        concepto,
+        concepto: concepto.trim(),
         monto: parseFloat(monto),
         socio_id: user.id,
         proveedor_id: proveedor || undefined,
         fecha: new Date().toISOString().split('T')[0],
-        notas,
-      });
+        notas: notas || undefined,
+      };
 
-      router.push('/dashboard');
+      console.log('Registrando gasto:', gastoData);
+
+      const result = await registrarGasto(gastoData);
+
+      if (!result) {
+        throw new Error('No se pudo guardar el gasto');
+      }
+
+      // Limpiar y redirigir
+      setConcepto('');
+      setMonto('');
+      setNotas('');
+      router.push('/gastos');
     } catch (err: any) {
-      setError(err.message || 'Error al registrar gasto');
+      console.error('Error completo:', err);
+
+      let mensaje = err.message || 'Error al registrar gasto';
+
+      // Errores comunes de Supabase
+      if (err.code === 'PGRST116') {
+        mensaje = '❌ Las tablas no existen en Supabase. Ejecuta SETUP_SUPABASE_SQL.sql primero';
+      } else if (err.code === '42P01') {
+        mensaje = '❌ Tabla no encontrada. Ejecuta el SQL de setup en Supabase';
+      } else if (err.message?.includes('permission denied')) {
+        mensaje = '❌ Permiso denegado. Revisa las políticas RLS en Supabase';
+      } else if (err.message?.includes('relation')) {
+        mensaje = '❌ La tabla no existe. Ejecuta SETUP_SUPABASE_SQL.sql en Supabase';
+      }
+
+      setError(mensaje);
     } finally {
       setLoading(false);
     }

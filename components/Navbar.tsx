@@ -29,13 +29,13 @@ export default function Navbar() {
           🌶️ Chilaquiles Baja
         </Link>
         <div className="flex gap-6 items-center">
-          <Link href="/dashboard" className="hover:text-blue-200">
+          <Link href="/dashboard" className="hover:text-blue-200 transition">
             Dashboard
           </Link>
-          <Link href="/gastos" className="hover:text-blue-200">
-            Gastos
+          <Link href="/gastos" className="hover:text-blue-200 transition">
+            Transacciones
           </Link>
-          <Link href="/reportes" className="hover:text-blue-200">
+          <Link href="/reportes" className="hover:text-blue-200 transition">
             Reportes
           </Link>
           <div className="flex items-center gap-3">
