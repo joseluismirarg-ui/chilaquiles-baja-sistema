@@ -18,6 +18,16 @@ import {
 
 const COLORS = ['#0C447C', '#3B6D11', '#A32D2D', '#DC3545', '#FFC107', '#17A2B8'];
 
+function formatoMoneda(value: any): string {
+  const num = Number(value);
+  return `$${isNaN(num) ? 0 : num.toLocaleString()}`;
+}
+
+function formatoPorcentaje(value: any): string {
+  const num = Number(value);
+  return `${isNaN(num) ? '0.0' : num.toFixed(1)}%`;
+}
+
 export function VentasChart({ data }: { data: any[] }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -25,7 +35,7 @@ export function VentasChart({ data }: { data: any[] }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="fecha" />
         <YAxis />
-        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+        <Tooltip formatter={formatoMoneda} />
         <Legend />
         <Line
           type="monotone"
@@ -53,7 +63,7 @@ export function IngresosGastosChart({ data }: { data: any[] }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="periodo" />
         <YAxis />
-        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+        <Tooltip formatter={formatoMoneda} />
         <Legend />
         <Bar dataKey="ingresos" fill="#3B6D11" name="Ingresos" />
         <Bar dataKey="gastos" fill="#A32D2D" name="Gastos" />
@@ -76,7 +86,7 @@ export function GastosPorCategoriaChart({
           cx="50%"
           cy="50%"
           labelLine={false}
-          label={({ nombre, valor }) => `${nombre}: $${valor}`}
+          label={(props: any) => `${props.nombre}: $${Number(props.valor).toLocaleString()}`}
           outerRadius={80}
           fill="#8884d8"
           dataKey="valor"
@@ -85,7 +95,7 @@ export function GastosPorCategoriaChart({
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+        <Tooltip formatter={formatoMoneda} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -98,9 +108,7 @@ export function MargenChart({ data }: { data: any[] }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="fecha" />
         <YAxis />
-        <Tooltip
-          formatter={(value) => `${typeof value === 'number' ? value.toFixed(1) : value}%`}
-        />
+        <Tooltip formatter={formatoPorcentaje} />
         <Legend />
         <Line
           type="monotone"
@@ -125,7 +133,7 @@ export function ComisionesChart({
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
         <YAxis dataKey="plataforma" type="category" />
-        <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+        <Tooltip formatter={formatoPorcentaje} />
         <Bar dataKey="comision" fill="#DC3545" name="Comisión %" />
       </BarChart>
     </ResponsiveContainer>
@@ -143,7 +151,7 @@ export function TopInsumosChart({
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
         <YAxis dataKey="insumo" type="category" width={100} />
-        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+        <Tooltip formatter={formatoMoneda} />
         <Bar dataKey="monto" fill="#FFC107" name="Monto" />
       </BarChart>
     </ResponsiveContainer>
