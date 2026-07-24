@@ -61,6 +61,7 @@ export default function RegistrarGastoPage() {
       if (tipo === 'variable' && cantidad) {
         try {
           const cantidadNum = parseFloat(cantidad);
+          const montoNum = parseFloat(monto);
           if (cantidadNum > 0) {
             // Obtener insumo si existe
             const { data: insumoExistente } = await supabase
@@ -75,7 +76,7 @@ export default function RegistrarGastoPage() {
                 .from('inventario')
                 .update({
                   cantidad: insumoExistente.cantidad + cantidadNum,
-                  precio_promedio: monto / cantidadNum, // Actualizar precio promedio
+                  precio_promedio: montoNum / cantidadNum,
                 })
                 .eq('id', insumoExistente.id);
             } else {
@@ -85,7 +86,7 @@ export default function RegistrarGastoPage() {
                   nombre: concepto,
                   cantidad: cantidadNum,
                   unidad,
-                  precio_promedio: monto / cantidadNum,
+                  precio_promedio: montoNum / cantidadNum,
                 },
               ]);
             }
