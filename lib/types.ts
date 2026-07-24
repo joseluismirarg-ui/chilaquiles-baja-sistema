@@ -67,3 +67,13 @@ export type Deuda = {
   estado: 'pendiente' | 'pagada';
   created_at: string;
 };
+
+export type Nota = {
+  id: string;
+  autor_id: string;
+  autor_email: string;
+  contenido: string;
+  tipo: 'general' | 'insumos_faltantes' | 'urgente';
+  fecha_nota: string;
+  created_at: string;
+};

@@ -46,6 +46,9 @@ export default function Navbar() {
           <Link href="/inventario" className="hover:text-blue-200 transition">
             Inventario
           </Link>
+          <Link href="/notas" className="hover:text-blue-200 transition">
+            Notas
+          </Link>
           <Link href="/reportes" className="hover:text-blue-200 transition">
             Reportes
           </Link>
