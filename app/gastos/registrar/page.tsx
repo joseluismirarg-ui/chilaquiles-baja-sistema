@@ -13,6 +13,8 @@ export default function RegistrarGastoPage() {
   const [concepto, setConcepto] = useState('');
   const [monto, setMonto] = useState('');
   const [proveedor, setProveedor] = useState('');
+  const [cantidad, setCantidad] = useState('');
+  const [unidad, setUnidad] = useState('kg');
   const [notas, setNotas] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -55,9 +57,48 @@ export default function RegistrarGastoPage() {
         throw new Error('No se pudo guardar el gasto');
       }
 
+      // Si es variable, agregar al inventario
+      if (tipo === 'variable' && cantidad) {
+        try {
+          const cantidadNum = parseFloat(cantidad);
+          if (cantidadNum > 0) {
+            // Obtener insumo si existe
+            const { data: insumoExistente } = await supabase
+              .from('inventario')
+              .select('*')
+              .ilike('nombre', concepto)
+              .single();
+
+            if (insumoExistente) {
+              // Actualizar cantidad existente
+              await supabase
+                .from('inventario')
+                .update({
+                  cantidad: insumoExistente.cantidad + cantidadNum,
+                  precio_promedio: monto / cantidadNum, // Actualizar precio promedio
+                })
+                .eq('id', insumoExistente.id);
+            } else {
+              // Crear nuevo insumo
+              await supabase.from('inventario').insert([
+                {
+                  nombre: concepto,
+                  cantidad: cantidadNum,
+                  unidad,
+                  precio_promedio: monto / cantidadNum,
+                },
+              ]);
+            }
+          }
+        } catch (inventarioErr) {
+          console.error('Error agregando al inventario:', inventarioErr);
+        }
+      }
+
       // Limpiar y redirigir
       setConcepto('');
       setMonto('');
+      setCantidad('');
       setNotas('');
       router.push('/gastos');
     } catch (err: any) {
@@ -150,6 +191,43 @@ export default function RegistrarGastoPage() {
                 />
               </div>
             </div>
+
+            {/* CANTIDAD Y UNIDAD (solo variables) */}
+            {tipo === 'variable' && (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Cantidad
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={cantidad}
+                    onChange={(e) => setCantidad(e.target.value)}
+                    placeholder="0.00"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Unidad
+                  </label>
+                  <select
+                    value={unidad}
+                    onChange={(e) => setUnidad(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option>kg</option>
+                    <option>lb</option>
+                    <option>lt</option>
+                    <option>ml</option>
+                    <option>unidad</option>
+                    <option>docena</option>
+                    <option>piezas</option>
+                  </select>
+                </div>
+              </div>
+            )}
 
             {/* PROVEEDOR */}
             {tipo === 'variable' && (
