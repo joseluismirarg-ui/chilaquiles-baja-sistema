@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -34,11 +35,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-2 text-center text-blue-900">
-          🌶️ Chilaquiles Baja
+      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+        <div className="flex justify-center mb-6">
+          <Logo size="lg" />
+        </div>
+        <h1 className="text-3xl font-bold mb-1 text-center text-blue-900">
+          Chilaquiles Baja
         </h1>
-        <p className="text-gray-600 text-center mb-8">Sistema Contable</p>
+        <p className="text-gray-600 text-center mb-8 font-semibold">
+          Sistema Contable
+        </p>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {error && (

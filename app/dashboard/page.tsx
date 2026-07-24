@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import Logo from '@/components/Logo';
 import { supabase } from '@/lib/supabase';
 import { obtenerTotalesGastos } from '@/lib/gastos';
 
@@ -56,14 +57,17 @@ export default function DashboardPage() {
 
       <main className="max-w-6xl mx-auto p-6">
         {/* HEADER */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Chilaquiles Baja</h1>
-          <p className="text-gray-600 mt-2">
-            {new Date().toLocaleDateString('es-MX', {
-              month: 'long',
-              year: 'numeric',
-            })}
-          </p>
+        <div className="mb-8 flex items-center gap-6">
+          <Logo size="lg" />
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900">Chilaquiles Baja</h1>
+            <p className="text-gray-600 mt-2">
+              {new Date().toLocaleDateString('es-MX', {
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+          </div>
         </div>
 
         {/* MÉTRICAS PRINCIPALES */}

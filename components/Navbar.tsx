@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useEffect, useState } from 'react';
+import Logo from './Logo';
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
@@ -25,8 +26,12 @@ export default function Navbar() {
   return (
     <nav className="bg-blue-900 text-white p-4">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="/dashboard" className="text-2xl font-bold">
-          🌶️ Chilaquiles Baja
+        <Link href="/dashboard" className="flex items-center gap-3 hover:opacity-80 transition">
+          <Logo size="md" />
+          <div>
+            <div className="text-lg font-bold">Chilaquiles Baja</div>
+            <div className="text-xs text-blue-200">Sistema Contable</div>
+          </div>
         </Link>
         <div className="flex gap-6 items-center text-sm">
           <Link href="/dashboard" className="hover:text-blue-200 transition">
