@@ -13,10 +13,58 @@ den credenciales de API.** Ninguna de las dos las entrega automáticamente:
 | Plataforma | Cómo se obtiene | Tiempo típico |
 |---|---|---|
 | **Uber Eats** | Alta en [developer.uber.com](https://developer.uber.com), crear la app y solicitar acceso a las *Marketplace APIs* para tu tienda. Uber tiene que aprobar los scopes. | Días o semanas |
-| **Didi Food** | No hay portal público. Se pide a tu **ejecutivo de cuenta** de Didi Food México que habilite la Open API del comercio. | Variable |
+| **Didi Food** | Portal de desarrolladores en [developer.didi-food.com](https://developer.didi-food.com). El acceso a la Open API se habilita por cuenta de comercio, así que normalmente hay que pedirlo también a soporte o a tu ejecutivo. | Variable |
 
 Mientras llegan, la **carga manual de archivos en `/reportes` sigue funcionando
 igual que antes**. Nada de lo que ya usas se rompió.
+
+---
+
+## 🔑 Paso 0 — Conseguir las credenciales
+
+Este trámite lo tiene que hacer el dueño del negocio: implica firmar acuerdos y
+verificar datos fiscales. No se puede automatizar.
+
+### Uber Eats
+
+Según la guía *Getting Started* de Uber, el alta tiene cuatro requisitos:
+
+1. **Cuenta de desarrollador** en [developer.uber.com](https://developer.uber.com).
+   Se empieza con una app de **Sandbox**.
+2. **Crear la app** en el portal. Ahí salen el `client_id` y el `client_secret`,
+   y se registran la Redirect URI y la URL de política de privacidad.
+3. **Acuerdos legales**: NDA y contrato de licencia de la API.
+4. **Aprobación del partner manager** de Uber Eats. Los scopes de producción
+   sólo funcionan después de que el equipo de Uber Eats apruebe y ponga tu app
+   en la lista blanca.
+
+El paso 4 es el que tarda. Si no tienes partner manager asignado, pídelo desde
+el portal de comercios de Uber Eats.
+
+Ten a la mano: razón social y RFC, el nombre del restaurante como aparece en
+Uber Eats, y el UUID de la sucursal.
+
+### Didi Food
+
+1. Entra a [developer.didi-food.com](https://developer.didi-food.com) y crea la
+   cuenta de desarrollador.
+2. Pide que habiliten la **Open API** para tu comercio. El acceso se otorga por
+   cuenta, así que normalmente hay que solicitarlo por soporte además de
+   registrarse en el portal:
+   - Correo de tiendas: `soporte.tienda@mx.didiglobal.com`
+   - Línea de restaurantes México: 800 323 3434
+   - Restaurantes premium: 800 801 0186
+3. Cuando lo habiliten, pide explícitamente estos cuatro datos, porque son los
+   que el sistema necesita y no siempre los mandan completos:
+   - `app_id` y `app_secret`
+   - **URL base de la API** para México
+   - **Algoritmo de firma** (HMAC-SHA256 o MD5) y el orden exacto de los
+     parámetros al firmar
+   - **Si los importes vienen en centavos o en pesos**
+
+> Existe también la ruta indirecta vía un integrador POS (Deliverect, Ordatic).
+> Sirve si el alta directa se atora, pero implica costo mensual y que los datos
+> pasen por un tercero.
 
 ---
 

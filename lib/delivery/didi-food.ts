@@ -1,8 +1,8 @@
 // Conector de Didi Food (Open API de comercios).
 //
-// Didi no publica su documentación abiertamente: la base de la API, las rutas y
-// el algoritmo de firma se entregan al dar de alta el comercio y cambian por
-// región. Por eso aquí:
+// La documentación vive en https://developer.didi-food.com y el acceso se
+// habilita por cuenta de comercio. La base de la API, las rutas y el algoritmo
+// de firma se entregan en ese alta y cambian por región. Por eso aquí:
 //   - la base y las rutas son configurables por variable de entorno,
 //   - la firma vive aislada en `firmarParametros`, que es la única función que
 //     hay que tocar si tu contrato usa otro esquema,
