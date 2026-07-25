@@ -61,6 +61,9 @@ export default function Navbar() {
           <Link href="/reportes" className="hover:text-blue-200 transition">
             Reportes
           </Link>
+          <Link href="/integraciones" className="hover:text-blue-200 transition">
+            Integraciones
+          </Link>
           <div className="flex items-center gap-3">
             <span className="text-sm">{user?.email}</span>
             <button

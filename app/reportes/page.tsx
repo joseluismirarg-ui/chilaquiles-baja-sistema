@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import { supabase } from '@/lib/supabase';
 import { obtenerGastosMes, obtenerTotalesGastos } from '@/lib/gastos';
@@ -117,6 +118,14 @@ export default function ReportesPage() {
 
           <p className="text-sm text-gray-600 mt-4">
             ✓ Detecta automáticamente: Uber Eats, Didi Food
+          </p>
+
+          <p className="text-sm text-gray-600 mt-2">
+            ¿Prefieres que entren solas?{' '}
+            <Link href="/integraciones" className="text-blue-600 hover:underline">
+              Conecta las plataformas por API
+            </Link>{' '}
+            y olvídate de subir archivos.
           </p>
         </div>
 

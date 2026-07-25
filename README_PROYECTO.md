@@ -39,6 +39,7 @@ pedro@chilaquiles.com / 123456
 ✅ **Dashboard** - Métricas en tiempo real (ventas, gastos, utilidad, margen)  
 ✅ **Registro de gastos** - Fijo, variable, venta física, venta plataforma  
 ✅ **Carga de reportes** - Uber Eats, Didi Food (CSV/Excel)  
+✅ **Conexión por API** - Sincroniza ventas directo de Uber Eats y Didi Food ([guía](INTEGRACION_DELIVERY.md))  
 ✅ **Cálculo de utilidades** - Reparto justo y automático entre socios  
 ✅ **Historial** - Todas las transacciones registradas  
 
